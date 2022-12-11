@@ -1,0 +1,20 @@
+﻿@model MVC_Roles.Models.RegistModel
+@{
+    ViewData["Title"] = "Регистрация";
+}
+<h1 style="text-align:center">РЕГИСТРАЦИЯ</h1>
+<hr/>
+<br/>
+<form asp-action="RegisterUser" method="post">
+    <label>Введите Email</label>
+    <input type="text" asp-for="Email" class="form-control">
+    <br/>
+    <label>Введите пароль:</label>
+    <input type="password" asp-for="Password" class="form-control">
+    <br/>
+    <label>Подтвердите пароль:</label>
+    <input type="password" asp-for="ConfirmPassword" class="form-control">
+    <br/>
+    <input type="submit" value="Зарегистрироваться" class="btn btn-outline-success"> 
+    <input type="submit" value="Отменить" class="btn btn-outline-primary" style="margin-left: 10px" asp-action="Index">
+</form>

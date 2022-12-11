@@ -1,11 +1,18 @@
-﻿@model MVC_Roles.Models.User
+﻿@model MVC_Roles.Models.LoginUser
 @{
     ViewData["Title"] = "Добро пожаловать";
 }
 <h1 style="text-align:center">АВТОРИЗАЦИЯ</h1>
 <hr/>
 <br/>
-<form asp-action="Index" class="form-control">
-    <input type="text" >
+<form asp-action="Index" method="post">
+    <label>Введите Email</label>
+    <input type="text" asp-for="Email" class="form-control">
+    <br/>
+    <label>Введите пароль:</label>
+    <input type="password" asp-for="Password" class="form-control">
+    <br/>
+    <input type="submit" value="Войти" class="btn btn-outline-success"> 
+    <input type="submit" value="Регистрация" class="btn btn-outline-primary" style="margin-left: 10px" asp-action="Registr">
 </form>
 
