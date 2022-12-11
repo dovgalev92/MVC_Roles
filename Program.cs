@@ -8,6 +8,14 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.AddDbContext<Context_Data>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+builder.Services.AddAuthentication("Cookies")
+    .AddCookie(options =>
+    {
+        options.LoginPath = ""; // путь по которому будет перенаправлен не авторизованный пользователь
+        options.AccessDeniedPath= "/";//путь по которому будет перенаправлен польозователь в случае отсувствия доступа к определенным ресурсам
+    });
+builder.Services.AddAuthorization();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -23,7 +31,9 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
+
 
 app.MapControllers();
 

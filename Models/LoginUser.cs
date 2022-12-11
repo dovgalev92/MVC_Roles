@@ -2,11 +2,12 @@
 
 namespace MVC_Roles.Models
 {
-    public class User
+    public class LoginUser
     {
-        public int Id { get; set; }
+        [Required(ErrorMessage = "Поле не должно быть пустым")]
         public string? Email { get; set; }
+        [Required]
+        [DataType(DataType.Password)]
         public string? Password { get; set; }
-        public Roles? Roles { get; set; }
     }
 }
