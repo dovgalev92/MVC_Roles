@@ -11,8 +11,8 @@ builder.Services.AddDbContext<Context_Data>(options => options.UseSqlServer(buil
 builder.Services.AddAuthentication("Cookies")
     .AddCookie(options =>
     {
-        options.LoginPath = ""; // путь по которому будет перенаправлен не авторизованный пользователь
-        options.AccessDeniedPath= "/";//путь по которому будет перенаправлен польозователь в случае отсувствия доступа к определенным ресурсам
+        options.LoginPath = "/Access/LogIn"; // путь по которому будет перенаправлен не авторизованный пользователь
+        options.AccessDeniedPath= "/Errores";//путь по которому будет перенаправлен польозователь в случае отсувствия доступа к определенным ресурсам
     });
 builder.Services.AddAuthorization();
 

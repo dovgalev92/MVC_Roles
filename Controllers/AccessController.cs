@@ -15,11 +15,22 @@ namespace MVC_Roles.Controllers
         {
             this.context = context;
         }
-        [Route("LoginIn")]
-        public IActionResult Index()
+        [Route("Login")]
+        public async Task<IActionResult> LogIn(LoginUser login)
         {
-            return View();
+            if (ModelState.IsValid)
+            {
+                var user = await context.Users.Include(r => r.Roles)
+                    .Where(u => u.Email.Equals(login.Email) && u.Password.Equals(login.Password)).FirstOrDefaultAsync();
+                if (user != null)
+                {
+                    await Authorisation(user);
+                    return RedirectToAction("Index", "Home");
+                }
+            }
+            return View(login);
         }
+        
         [Route("Registr")]
         public async Task<IActionResult> RegisterUser(RegistModel regist)
         {
@@ -28,8 +39,12 @@ namespace MVC_Roles.Controllers
                 var user = context.Users.FirstOrDefault(u => u.Email.Equals(regist.Email));
                 if(user == null)
                 {
-                    user = new User { Email = regist.Email, Password = regist.Password };
-                    Roles roles = await context.Roles.FirstOrDefaultAsync(n => n.Name == "Пользователь");
+                    user = new User 
+                    { Email = regist.Email, 
+                      Password = regist.Password 
+                    };
+
+                    Roles roles = await context.Roles.FirstOrDefaultAsync(n => n.Name == "Администратор");
                     if(roles!= null)
                     {
                         user.Roles = roles;
