@@ -14,5 +14,6 @@ namespace MVC_Roles.Models
         [DataType(DataType.Password)]
         [Compare("Password", ErrorMessage = "Пароль введен неверно")]
         public string? ConfirmPassword { get; set; }
+        public string CityUser { get; set; } = string.Empty;
     }
 }

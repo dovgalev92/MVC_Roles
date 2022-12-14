@@ -1,5 +1,7 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using MVC_Roles.Context;
+using System.Security.Claims;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,13 +10,20 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.AddDbContext<Context_Data>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+
 builder.Services.AddAuthentication("Cookies")
     .AddCookie(options =>
     {
         options.LoginPath = "/Access/LogIn"; // путь по которому будет перенаправлен не авторизованный пользователь
-        options.AccessDeniedPath= "/Errores";//путь по которому будет перенаправлен польозователь в случае отсувствия доступа к определенным ресурсам
+        options.AccessDeniedPath= "/GetResultSetting";//путь по которому будет перенаправлен польозователь в случае отсувствия доступа к определенным ресурсам
     });
-builder.Services.AddAuthorization();
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("CityRogachev", policy =>
+    {
+        policy.RequireClaim(ClaimTypes.Locality, "Рогачев", "Rogachev");
+    });
+});
 
 var app = builder.Build();
 

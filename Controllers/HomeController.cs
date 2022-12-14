@@ -16,6 +16,7 @@ namespace MVC_Roles.Controllers
         {
             _logger = logger;
         }
+        
         [Route("LoginUser")]
         public IActionResult Index()
         {
@@ -46,6 +47,13 @@ namespace MVC_Roles.Controllers
         public IActionResult GetResultSetting()
         {
             return View();
+        }
+        [Route("City")]
+        [Authorize(Policy = "CityRogachev", Roles = "Пользователь")]
+        public IActionResult RogachevCity()
+       {
+            string city = User.FindFirst(c => c.Type == ClaimTypes.Locality).Value;
+            return Content($"Мы рады приветствовать представителей города {city}");
         }
     }
 }

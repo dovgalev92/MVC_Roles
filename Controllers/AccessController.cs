@@ -39,12 +39,14 @@ namespace MVC_Roles.Controllers
                 var user = context.Users.FirstOrDefault(u => u.Email.Equals(regist.Email));
                 if(user == null)
                 {
-                    user = new User 
-                    { Email = regist.Email, 
-                      Password = regist.Password 
+                    user = new User
+                    {
+                        Email = regist.Email,
+                        Password = regist.Password,
+                        City = regist.CityUser
                     };
 
-                    Roles roles = await context.Roles.FirstOrDefaultAsync(n => n.Name == "Администратор");
+                    Roles roles = await context.Roles.FirstOrDefaultAsync(n => n.Name == "Пользователь");
                     if(roles!= null)
                     {
                         user.Roles = roles;
@@ -59,14 +61,13 @@ namespace MVC_Roles.Controllers
             return View(regist);
         }
 
-
-
         public async Task Authorisation(User user)
         {
             var claim = new List<Claim>
             {
                 new Claim(ClaimsIdentity.DefaultNameClaimType, user.Email),
-                new Claim(ClaimsIdentity.DefaultRoleClaimType, user.Roles?.Name)
+                new Claim(ClaimsIdentity.DefaultRoleClaimType, user.Roles?.Name),
+                new Claim(ClaimTypes.Locality, user.City)
             };
             var claimIdentity = new ClaimsIdentity(claim, "Cookies", ClaimsIdentity.DefaultNameClaimType, ClaimsIdentity.DefaultRoleClaimType);
             await HttpContext.SignInAsync("Cookies", new ClaimsPrincipal(claimIdentity));
