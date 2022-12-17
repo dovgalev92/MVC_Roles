@@ -15,5 +15,6 @@ namespace MVC_Roles.Models
         [Compare("Password", ErrorMessage = "Пароль введен неверно")]
         public string? ConfirmPassword { get; set; }
         public string CityUser { get; set; } = string.Empty;
+        public int Age { get; set; }
     }
 }

@@ -43,7 +43,8 @@ namespace MVC_Roles.Controllers
                     {
                         Email = regist.Email,
                         Password = regist.Password,
-                        City = regist.CityUser
+                        City = regist.CityUser,
+                        Age = regist.Age
                     };
 
                     Roles roles = await context.Roles.FirstOrDefaultAsync(n => n.Name == "Пользователь");
@@ -67,7 +68,8 @@ namespace MVC_Roles.Controllers
             {
                 new Claim(ClaimsIdentity.DefaultNameClaimType, user.Email),
                 new Claim(ClaimsIdentity.DefaultRoleClaimType, user.Roles?.Name),
-                new Claim(ClaimTypes.Locality, user.City)
+                new Claim("CityRogachev", user.City),
+                new Claim("MinimumDataOfBirdth", user.Age.ToString())
             };
             var claimIdentity = new ClaimsIdentity(claim, "Cookies", ClaimsIdentity.DefaultNameClaimType, ClaimsIdentity.DefaultRoleClaimType);
             await HttpContext.SignInAsync("Cookies", new ClaimsPrincipal(claimIdentity));

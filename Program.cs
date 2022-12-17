@@ -1,6 +1,9 @@
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using MVC_Roles.Context;
+using MVC_Roles.RequestHandlers;
 using System.Security.Claims;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -21,9 +24,19 @@ builder.Services.AddAuthorization(options =>
 {
     options.AddPolicy("CityRogachev", policy =>
     {
-        policy.RequireClaim(ClaimTypes.Locality, "Рогачев", "Rogachev");
+        policy.AddRequirements(
+        new CityRequarement("Рогачев"));
+    });
+    options.AddPolicy("MinimumDataOfBirdth", policy =>
+    {
+        policy.AddRequirements(
+            new MinimumAgeRequirement(18));
     });
 });
+builder.Services.AddScoped<IAuthorizationHandler, CityHandler>();
+builder.Services.AddScoped<IAuthorizationHandler, DataOfBirthHandler>();
+
+
 
 var app = builder.Build();
 

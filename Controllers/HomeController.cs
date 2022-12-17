@@ -22,7 +22,6 @@ namespace MVC_Roles.Controllers
         {
             string roles = User.FindFirst(x => x.Type == ClaimsIdentity.DefaultRoleClaimType).Value;
             return Content($"Вы вошли как {roles}");
-
         }
         [Route("Setting")]
         [Authorize(Roles = "Администратор")]
@@ -49,11 +48,17 @@ namespace MVC_Roles.Controllers
             return View();
         }
         [Route("City")]
-        [Authorize(Policy = "CityRogachev", Roles = "Пользователь")]
+        [Authorize("CityRogachev")]
         public IActionResult RogachevCity()
-       {
-            string city = User.FindFirst(c => c.Type == ClaimTypes.Locality).Value;
+        {
+            string city = User.FindFirst(c => c.Type == "CityRogachev").Value;
             return Content($"Мы рады приветствовать представителей города {city}");
+        }
+        [Route("Min")]
+        [Authorize("MinimumDataOfBirdth")]
+        public IActionResult MinAge()
+        {
+            return Content("Вы подтвердили, что Вам 18 лет и выше");
         }
     }
 }
